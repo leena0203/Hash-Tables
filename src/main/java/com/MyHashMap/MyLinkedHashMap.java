@@ -1,67 +1,86 @@
 package com.MyHashMap;
 import java.util.ArrayList;
 
-public class MyLinkedHashMap<k, v> {
-	private final int numBuckets;
-	ArrayList<MyLinkedList<k>> myBucketArray;
+public class MyLinkedHashMap<K, V> {
+	private final int numOfBuckets;
+	ArrayList<MyLinkedList> bucketArray;
 
 	public MyLinkedHashMap() {
-		numBuckets = 10;
-		myBucketArray = new ArrayList<>(numBuckets);
-		// creating empty array list
-		for (int i = 0; i < numBuckets; i++)
-			myBucketArray.add(null);
+		this.numOfBuckets = 10;
+		this.bucketArray = new ArrayList(numOfBuckets);
+		for (int i = 0; i < numOfBuckets; i++) {
+			this.bucketArray.add(null);
+		}
 	}
 
 	/**
-	 * Returns the value for given key
+	 * Returning the value for respective key
 	 * 
+	 * @param key
+	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public v get(k key) {
-		int index = getBucketIndex(key);
-		MyLinkedList<k> myLinkedList = myBucketArray.get(index);
-		if (myLinkedList == null)
+	public V get(K key) {
+		int index = this.getBucketIndex(key);
+		MyLinkedList<K> list = this.bucketArray.get(index);
+		if (list == null) {
 			return null;
-		MyMapNode<k, v> myHashNode = (MyMapNode<k, v>) myLinkedList.search(key);
-		return (myHashNode == null) ? null : myHashNode.getValue();
+		}
+		MyMapNode<K, V> myMapNode = (MyMapNode) list.search(key);
+		V value;
+		if (myMapNode == null) {
+			value = null;
+		} else {
+			value = myMapNode.getValue();
+		}
+		return value;
 	}
 
 	/**
 	 * Adding the list to index or updating the node in the list
 	 * 
+	 * @param key
+	 * @param value
 	 */
-	@SuppressWarnings("unchecked")
-	public void add(k key, v value) {
+	public void add(K key, V value) {
 		int index = this.getBucketIndex(key);
-		MyLinkedList<k> myLinkedList = myBucketArray.get(index);
-		if (myLinkedList == null) {
-			myLinkedList = new MyLinkedList<>();
-			myBucketArray.set(index, myLinkedList);
+		MyLinkedList<K> list = this.bucketArray.get(index);
+		if (list == null) {
+			list = new MyLinkedList<>();
+			this.bucketArray.set(index, list);
 		}
-		MyMapNode<k, v> node = (MyMapNode<k, v>) myLinkedList.search(key);
-		if (node == null) {
-			node = new MyMapNode<>(key, value);
-			myLinkedList.append(node);
+		MyMapNode<K, V> myNode = (MyMapNode) list.search(key);
+		if (myNode == null) {
+			myNode = new MyMapNode<>(key, value);
+			list.append(myNode);
 		} else {
-			node.setValue(value);
+			myNode.setValue(value);
 		}
 	}
 
 	/**
-	 * finds the hash code for the key and returns array index
+	 * finding the hash code for the key and returning array index
 	 * 
+	 * @param key
+	 * @return
 	 */
-	private int getBucketIndex(k key) {
+	private int getBucketIndex(K key) {
 		int hashCode = Math.abs(key.hashCode());
-		int index = hashCode % numBuckets;
+		int index = hashCode % numOfBuckets;
 		return index;
 	}
 
-	@Override
 	public String toString() {
-		return "MyLinkedHashMap List{" + myBucketArray + "}";
+		return "MyLinkedHashMap List{" + bucketArray + "}";
 	}
 
+	public void remove(K key) {
+		int index = this.getBucketIndex(key);
+		MyLinkedList<K> list = this.bucketArray.get(index);
+		if (list == null) {
+			System.out.println("The key does not exist");
+			return;
+		}
+		MyMapNode<K, V> myMapNode = (MyMapNode) list.search(key);
+		list.delete(myMapNode);
+	}
 }
-

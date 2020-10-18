@@ -45,6 +45,20 @@ public class MyLinkedList<K> {
 		}
 		return null;
 	}
+	
+	/**
+	 * remove the element from list
+	 * @param key
+	 */
+	public void  delete(INode myMapNode){
+		INode tempNode = head;
+		INode previous = head;
+		while (!tempNode.getKey().equals(myMapNode.getKey())) {
+			previous = tempNode;
+			tempNode = tempNode.getNext();
+		}
+		previous.setNext(tempNode.getNext());
+	}
 
 	public void print() {
 		System.out.println("Nodes: "+head);
