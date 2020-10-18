@@ -4,7 +4,7 @@ public class MyMapNode<K, V> implements INode<K> {
 	K key;
 	V value;
 	MyMapNode<K, V>next;
-	
+
 	public MyMapNode(K key,V value) {
 		this.key = key;
 		this.value = value;
@@ -31,14 +31,14 @@ public class MyMapNode<K, V> implements INode<K> {
 	public void setNext(@SuppressWarnings("rawtypes") INode next) {
 		this.next = (MyMapNode<K, V>) next;
 	}
-	
+
 	public V getValue() {
 		return value;
 	}
 	public void setValue(V value) {
 		this.value = value;
 	}
-	 
+
 	public String toString() {
 		StringBuilder nodeString = new StringBuilder();
 		nodeString.append("MapNode{ " + "K=").append(key)
@@ -47,6 +47,6 @@ public class MyMapNode<K, V> implements INode<K> {
 			nodeString.append("->").append(next);
 		return nodeString.toString();
 	}
-	
+
 
 }
